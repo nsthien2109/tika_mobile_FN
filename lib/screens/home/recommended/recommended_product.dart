@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
+import 'package:provider/provider.dart';
+import 'package:tika_store/providers/home_provider.dart';
 
 class RecommendedProduct extends StatelessWidget {
   const RecommendedProduct({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _shimmerLoading = ShimmerLoading();
-    return Container(
-      child: _shimmerLoading.buildShimmerProduct(((MediaQuery.of(context).size.width) - 24) / 2 - 12),
-    );
+    return Consumer<HomeProvider>(
+        builder: (_, state, __) => Container(
+              child: RefreshIndicator(
+                  onRefresh: state.refreshData, child: Container()),
+            ));
   }
 }

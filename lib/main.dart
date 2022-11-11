@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/banner_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
+import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/screens/navigate/navigate.dart';
 
 void main() {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => BannerProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

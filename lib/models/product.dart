@@ -1,12 +1,12 @@
 class ProductModel {
   String? message;
-  Data? data;
+  DataProductPage? data;
 
   ProductModel({this.message, this.data});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataProductPage.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -19,59 +19,42 @@ class ProductModel {
   }
 }
 
-class Data {
+class DataProductPage {
   int? currentPage;
-  List<Data>? data;
+  List<DataProduct>? data;
   String? firstPageUrl;
-  int? from;
   int? lastPage;
   String? lastPageUrl;
-  List<Links>? links;
   String? nextPageUrl;
   String? path;
   int? perPage;
-  String? prevPageUrl;
-  int? to;
   int? total;
 
-  Data(
+  DataProductPage(
       {this.currentPage,
       this.data,
       this.firstPageUrl,
-      this.from,
       this.lastPage,
       this.lastPageUrl,
-      this.links,
       this.nextPageUrl,
       this.path,
       this.perPage,
-      this.prevPageUrl,
-      this.to,
       this.total});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataProductPage.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <DataProduct>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(DataProduct.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
-    from = json['from'];
     lastPage = json['last_page'];
     lastPageUrl = json['last_page_url'];
-    if (json['links'] != null) {
-      links = <Links>[];
-      json['links'].forEach((v) {
-        links!.add(Links.fromJson(v));
-      });
-    }
     nextPageUrl = json['next_page_url'];
     path = json['path'];
     perPage = json['per_page'];
-    prevPageUrl = json['prev_page_url'];
-    to = json['to'];
     total = json['total'];
   }
 
@@ -82,41 +65,98 @@ class Data {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     data['first_page_url'] = firstPageUrl;
-    data['from'] = from;
     data['last_page'] = lastPage;
     data['last_page_url'] = lastPageUrl;
-    if (links != null) {
-      data['links'] = links!.map((v) => v.toJson()).toList();
-    }
     data['next_page_url'] = nextPageUrl;
     data['path'] = path;
     data['per_page'] = perPage;
-    data['prev_page_url'] = prevPageUrl;
-    data['to'] = to;
     data['total'] = total;
     return data;
   }
 }
 
+class DataProduct {
+  int? idProduct;
+  String? productName;
+  String? productDescription;
+  String? productPrice;
+  String? productAmount;
+  String? productImage;
+  int? purchases;
+  int? likes;
+  int? comments;
+  String? discount;
+  int? idStore;
+  int? idCategory;
+  int? idSubCategory;
+  int? idBrand;
+  String? categoryName;
+  int? numProducts;
+  String? brandName;
+  String? subCategoryName;
 
-class Links {
-  String? url;
-  String? label;
-  bool? active;
+  DataProduct(
+      {this.idProduct,
+      this.productName,
+      this.productDescription,
+      this.productPrice,
+      this.productAmount,
+      this.productImage,
+      this.purchases,
+      this.likes,
+      this.comments,
+      this.discount,
+      this.idStore,
+      this.idCategory,
+      this.idSubCategory,
+      this.idBrand,
+      this.categoryName,
+      this.numProducts,
+      this.brandName,
+      this.subCategoryName
+      });
 
-  Links({this.url, this.label, this.active});
-
-  Links.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-    active = json['active'];
+  DataProduct.fromJson(Map<String, dynamic> json) {
+    idProduct = json['id_product'];
+    productName = json['productName'];
+    productDescription = json['productDescription'];
+    productPrice = json['productPrice'];
+    productAmount = json['productAmount'];
+    productImage = json['productImage'];
+    purchases = json['purchases'];
+    likes = json['likes'];
+    comments = json['comments'];
+    discount = json['discount'];
+    idStore = json['id_store'];
+    idCategory = json['id_category'];
+    idSubCategory = json['id_sub_category'];
+    idBrand = json['id_brand'];
+    categoryName = json['categoryName'];
+    numProducts = json['numProducts'];
+    brandName = json['brandName'];
+    subCategoryName = json['subCategoryName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['url'] = url;
-    data['label'] = label;
-    data['active'] = active;
+    data['id_product'] = idProduct;
+    data['productName'] = productName;
+    data['productDescription'] = productDescription;
+    data['productPrice'] = productPrice;
+    data['productAmount'] = productAmount;
+    data['productImage'] = productImage;
+    data['purchases'] = purchases;
+    data['likes'] = likes;
+    data['comments'] = comments;
+    data['discount'] = discount;
+    data['id_store'] = idStore;
+    data['id_category'] = idCategory;
+    data['id_sub_category'] = idSubCategory;
+    data['id_brand'] = idBrand;
+    data['categoryName'] = categoryName;
+    data['numProducts'] = numProducts;
+    data['brandName'] = brandName;
+    data['subCategoryName'] = subCategoryName;
     return data;
   }
 }
