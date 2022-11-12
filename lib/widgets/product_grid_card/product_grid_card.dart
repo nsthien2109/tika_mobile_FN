@@ -18,7 +18,7 @@ class ProductGridCard extends StatelessWidget {
         elevation: 2,
         color: AppColors.white,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(context, '/detail', arguments: product),
           child: Column(
             children: [
               ClipRRect(

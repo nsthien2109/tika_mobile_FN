@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/banner_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
+import 'package:tika_store/providers/detail_product_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/providers/navigate_provider.dart';
-import 'package:tika_store/screens/navigate/navigate.dart';
 
 import 'routers/router.dart';
 
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BannerProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => DetailProductProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Inter',
           appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: AppColors.primary),
-            color: AppColors.primary,
+            color: AppColors.white,
+            elevation: 0,
             foregroundColor: Colors.black,
             systemOverlayStyle: SystemUiOverlayStyle(
               systemNavigationBarColor: Colors.blue, // Navigation bar

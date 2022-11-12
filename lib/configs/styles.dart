@@ -7,4 +7,9 @@ class AppStyle{
       fontWeight: FontWeight.bold,
       color: AppColors.primary
   );
+
+  static const TextStyle detailProductPrice = TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold
+  );
 }
