@@ -7,7 +7,10 @@ import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/banner_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
+import 'package:tika_store/providers/navigate_provider.dart';
 import 'package:tika_store/screens/navigate/navigate.dart';
+
+import 'routers/router.dart';
 
 void main() {
   runApp(DevicePreview(
@@ -23,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => NavigateProvider()),
         ChangeNotifierProvider(create: (_) => BannerProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
@@ -33,6 +37,8 @@ class MyApp extends StatelessWidget {
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         title: 'Tika',
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: '/',
         theme: ThemeData(
           fontFamily: 'Inter',
           appBarTheme: const AppBarTheme(
@@ -45,7 +51,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const NavigateView(),
       ),
     );
   }

@@ -13,12 +13,12 @@ class HomeProvider extends ChangeNotifier {
   int _currentSlider = 0;
   ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
-  bool _lastData = false;
+  bool _loadingProduct = false;
 
   ProductModel get products => _products;
   int get currentPage => _currentPage;
   ScrollController get scrollController => _scrollController;
-  bool get lastData => _lastData;
+  bool get loadingProduct => _loadingProduct;
   CategoryModel get categories => _categories;
   int get currentSlider => _currentSlider;
   BannerModel get banners => _banners;
@@ -53,14 +53,15 @@ class HomeProvider extends ChangeNotifier {
 
   // Get home products
   Future getProducts() async {
+    _loadingProduct = false;
     final ProductModel? responseProducts =
         await ProductService.getProducts(_currentPage);
     if (_currentPage == 1) {
       _products = responseProducts ?? ProductModel();
-      _currentPage + 1;
+      _currentPage += 1;
+      _loadingProduct = true;
       notifyListeners();
-    }
-    if (_currentPage > 1 && _products.data!.data!.isNotEmpty) {
+    } else if (_currentPage > 1 && _products.data!.data!.isNotEmpty) {
       _products.message = responseProducts?.message;
       _products.data?.data = [
         ...?_products.data?.data,
@@ -74,7 +75,8 @@ class HomeProvider extends ChangeNotifier {
       _products.data?.path = responseProducts?.data?.path;
       _products.data?.perPage = responseProducts?.data?.perPage;
       _products.data?.total = responseProducts?.data?.total;
-      _currentPage + 1;
+      _currentPage += 1;
+      _loadingProduct = true;
       notifyListeners();
     }
   }
@@ -96,9 +98,16 @@ class HomeProvider extends ChangeNotifier {
     double maxScroll = _scrollController.position.maxScrollExtent;
     double currentScroll = _scrollController.position.pixels;
     if (currentScroll == maxScroll) {
-      if (_lastData == false && _currentPage <= _products.data!.lastPage!) {
-        getProducts();
+      if (_products.message == "Success") {
+        if (_currentPage <= _products.data!.lastPage!) {
+          _loadingProduct = false;
+          getProducts();
+        }
+        if (_currentPage == _products.data!.lastPage) {
+          _loadingProduct = true;
+        }
       }
+      notifyListeners();
     }
   }
 

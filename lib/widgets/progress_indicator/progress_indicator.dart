@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:tika_store/configs/theme.dart';
 
-class ProgressIndicator extends StatelessWidget {
-  bool lastData;
-  ProgressIndicator({super.key, required this.lastData});
+class CustomerProgressIndicator extends StatelessWidget {
+  bool loadData;
+  CustomerProgressIndicator({super.key, required this.loadData});
 
   @override
   Widget build(BuildContext context) {
-    return !lastData ? Padding(
+    return loadData == false ? Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: Opacity(

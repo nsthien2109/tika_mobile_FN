@@ -8,6 +8,7 @@ import 'package:tika_store/screens/home/recommended/recommended_product.dart';
 import 'package:tika_store/screens/home/slideshow/slideshow.dart';
 import 'package:tika_store/widgets/search_bar/search_bar.dart';
 import 'package:tika_store/widgets/section_title/section_title.dart';
+import 'package:tika_store/widgets/progress_indicator/progress_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +24,10 @@ class HomeScreen extends StatelessWidget {
               strokeWidth: 1,
               onRefresh: state.refreshData,
               child: CustomScrollView(
+                primary: false,
+                shrinkWrap: true,
+                controller: state.scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverAppBar(
                     elevation: 0,
@@ -46,6 +51,7 @@ class HomeScreen extends StatelessWidget {
                   const SearchBar(),
                   SliverList(
                       delegate: SliverChildListDelegate(
+                      
                       [
                         SlideShow(
                           banners: state.banners.data,
@@ -54,12 +60,14 @@ class HomeScreen extends StatelessWidget {
                         ),
                         CategoryMenu(categories: state.categories.data),
                         SectionTitle(sectionTitle: "Flash Sale"),
-                        SectionTitle(sectionTitle: "Brands"),
                         SectionTitle(sectionTitle: "Recommended Products"),
-                        const RecommendedProduct()
+                        Expanded(child: RecommendedProduct(products: state.products.data?.data)),     
                       ]
                     )
-                  ),            
+                  ),
+                  SliverToBoxAdapter(
+                    child: CustomerProgressIndicator(loadData: state.loadingProduct),
+                  )            
                 ],
               ),
             );

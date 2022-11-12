@@ -5,6 +5,8 @@ class AppColors {
   static const white = Color(0xFFFFFFFF);
   static const red = Color(0xFFFF7272);
   static const black = Color(0xFF000000);
+  static const blackLighter = Color(0xFF515151);
+  static const greyLighter = Color(0xFFAAAAAA);
   static const greyDarker = Color(0xFF4F4F4F);
   static const background = Color(0xFFF6F9FF);
   static const placeholderImageColor = Color(0xFFEEEEEE);
