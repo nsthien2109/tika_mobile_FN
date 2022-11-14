@@ -12,4 +12,13 @@ class AppStyle{
       fontSize: 20,
       fontWeight: FontWeight.bold
   );
+  static const TextStyle sectionTitle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500
+  );
+  static const TextStyle viewAll = TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.bold,
+      color: AppColors.primary
+  );
 }

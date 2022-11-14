@@ -6,8 +6,8 @@ import 'package:tika_store/configs/config.dart';
 import 'package:tika_store/models/image.dart';
 
 class ImageService {
-  static Future<ImageModel?> getImages(id_product) async {
-    final response = await http.get(Uri.parse('$domain/images/$id_product'));
+  static Future<ImageModel?> getImages(idProduct) async {
+    final response = await http.get(Uri.parse('$domain/images/$idProduct'));
     if (response.statusCode == 200) {
       final imageResponse = json.decode(response.body);
       final imageData = imageResponse['data'] as List<dynamic>;

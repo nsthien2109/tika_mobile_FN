@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:tika_store/configs/styles.dart';

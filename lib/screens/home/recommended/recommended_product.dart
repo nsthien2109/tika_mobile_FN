@@ -28,5 +28,5 @@ class RecommendedProduct extends StatelessWidget {
             ),
         )
         : ShimmerLoading().buildShimmerProduct(imageSize);
-  }
+    }
 }

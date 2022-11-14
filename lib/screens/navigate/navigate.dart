@@ -5,18 +5,27 @@ import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/navigate_provider.dart';
 import 'package:tika_store/screens/auth/sign_in_screen.dart';
 import 'package:tika_store/screens/home/home_screen.dart';
+import 'package:tika_store/screens/order/order_screen.dart';
+import 'package:tika_store/widgets/comming_soon/comming_soon.dart';
 
 class NavigateView extends StatelessWidget {
   const NavigateView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const tikaMainPage = [
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-      SignInScreen(),
+    final tikaMainPage = [
+      const HomeScreen(),
+      CommingSoon(
+        imageAssetUrl: 'assets/images/chat_sticker.png',
+        title: "Chat",
+      ),
+      const OrderScreen(),
+      CommingSoon(
+        imageAssetUrl: 'assets/images/notify_sticker.png',
+        title: "Notification",
+        backButton: true,
+      ),
+      const SignInScreen(),
     ];
 
     return Consumer<NavigateProvider>(

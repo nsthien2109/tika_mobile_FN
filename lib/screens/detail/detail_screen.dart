@@ -1,12 +1,18 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/product.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
+import 'package:tika_store/screens/detail/ProductDescription/product_description.dart';
 import 'package:tika_store/screens/detail/ProductImageSlider/product_image_slider.dart';
+import 'package:tika_store/screens/detail/ProductInfomation/product_infomation.dart';
+import 'package:tika_store/screens/detail/ProductRate/product_rate.dart';
 import 'package:tika_store/screens/detail/ProductSummary/product_sumary.dart';
 import 'package:tika_store/screens/detail/ProductVariant/product_variant.dart';
+import 'package:tika_store/widgets/button/tika_button.dart';
 
 class DetailScreen extends StatefulWidget {
   DataProduct product;
@@ -23,6 +29,7 @@ class _DetailScreenState extends State<DetailScreen> {
         Provider.of<DetailProductProvider>(context, listen: false);
     detailProvider.getImages(widget.product.idProduct);
     detailProvider.getVariant(widget.product.idProduct);
+    detailProvider.getComments(widget.product.idProduct);
     super.initState();
   }
 
@@ -43,19 +50,61 @@ class _DetailScreenState extends State<DetailScreen> {
       body: SafeArea(
           child: Consumer<DetailProductProvider>(
               builder: (_, state, __) => state.loadingDetail == false
-                  ? Flexible(
-                      child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        ProductImageSlider(
-                            onChangeSlider: state.onChangeImageDetail,
-                            currentSlider: state.currentImage,
-                            images: state.images.data),
-                        ProductSumary(product: widget.product),
-                        ProductVariant()
-                      ],
-                    ))
-                  : const Text("Loading..."))),
+                  ? ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ProductImageSlider(
+                        onChangeSlider: state.onChangeImageDetail,
+                        currentSlider: state.currentImage,
+                        images: state.images.data),
+                    ProductSumary(product: widget.product),
+                    ProductVariant(
+                      sizes: state.variant.data?.sizes,
+                      colors: state.variant.data?.colors,
+                      selectedSize: state.selectedSize,
+                      selectedColor: state.selectedColor,
+                      onChangeSize: state.onChangeSize,
+                      onChangeColor: state.onChangeColor,
+                    ),
+                    ProductInfomation(
+                      product: widget.product,
+                    ),
+                    ProductDescription(
+                      description:
+                          widget.product.productDescription.toString(),
+                    ),
+                    ProductRate(comments: state.comments.data),
+                    const SizedBox(height: 60),
+                  ],
+                    )
+                  : const Text("Loading..."))
+          ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        color: AppColors.white,
+        height: 70,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 50,
+              height: 50,  
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                border: Border.all(
+                  color: AppColors.primary
+                ),
+                borderRadius: BorderRadius.circular(100)
+              ),           
+              child: const Icon(FluentIcons.chat_16_regular, color: AppColors.primary),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: TikaButton(label: "Add to cart", height: 50)
+            )
+          ],
+        ),
+      ),
     );
   }
 }

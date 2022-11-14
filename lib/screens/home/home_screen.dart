@@ -51,7 +51,6 @@ class HomeScreen extends StatelessWidget {
                   const SearchBar(),
                   SliverList(
                       delegate: SliverChildListDelegate(
-                      
                       [
                         SlideShow(
                           banners: state.banners.data,
@@ -61,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                         CategoryMenu(categories: state.categories.data),
                         SectionTitle(sectionTitle: "Flash Sale"),
                         SectionTitle(sectionTitle: "Recommended Products"),
-                        Expanded(child: RecommendedProduct(products: state.products.data?.data)),     
+                        RecommendedProduct(products: state.products.data?.data),     
                       ]
                     )
                   ),

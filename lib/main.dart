@@ -9,6 +9,7 @@ import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/providers/navigate_provider.dart';
+import 'package:tika_store/providers/search_provider.dart';
 
 import 'routers/router.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => DetailProductProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

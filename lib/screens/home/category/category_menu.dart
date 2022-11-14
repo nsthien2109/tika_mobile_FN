@@ -1,10 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:tika_store/configs/config.dart';
 import 'package:tika_store/configs/responsive.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/category.dart';
-import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/widgets/cache_image/cache_image_network.dart';
 import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
 
@@ -20,6 +20,7 @@ class CategoryMenu extends StatelessWidget {
             height: 180,
             width: widthP(context),
             child: GridView.count(
+              physics: BouncingScrollPhysics(),
               mainAxisSpacing: 1,
               crossAxisSpacing: 1,
               shrinkWrap: true,
@@ -29,8 +30,7 @@ class CategoryMenu extends StatelessWidget {
               children: List.generate(
                   categories!.length,
                   (index) => GestureDetector(
-                        onTap: () => debugPrint(
-                            "You are clicked on category ${categories?[index].categoryName}"),
+                        onTap: () => Navigator.pushNamed(context, '/category', arguments: categories![index]),
                         child: Stack(
                           alignment: Alignment.center,
                           children: [

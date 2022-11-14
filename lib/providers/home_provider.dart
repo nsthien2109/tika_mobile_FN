@@ -11,7 +11,7 @@ class HomeProvider extends ChangeNotifier {
   CategoryModel _categories = CategoryModel();
   BannerModel _banners = BannerModel();
   int _currentSlider = 0;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   bool _loadingProduct = false;
 
@@ -109,6 +109,7 @@ class HomeProvider extends ChangeNotifier {
       }
       notifyListeners();
     }
+    notifyListeners();
   }
 
   @override
