@@ -5,14 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/product.dart';
+import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
 import 'package:tika_store/screens/detail/ProductDescription/product_description.dart';
 import 'package:tika_store/screens/detail/ProductImageSlider/product_image_slider.dart';
 import 'package:tika_store/screens/detail/ProductInfomation/product_infomation.dart';
 import 'package:tika_store/screens/detail/ProductRate/product_rate.dart';
+import 'package:tika_store/screens/detail/ProductRelated/product_related.dart';
 import 'package:tika_store/screens/detail/ProductSummary/product_sumary.dart';
 import 'package:tika_store/screens/detail/ProductVariant/product_variant.dart';
 import 'package:tika_store/widgets/button/tika_button.dart';
+import 'package:tika_store/widgets/comming_soon/comming_soon.dart';
+import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
 
 class DetailScreen extends StatefulWidget {
   DataProduct product;
@@ -25,11 +29,12 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
-    final detailProvider =
-        Provider.of<DetailProductProvider>(context, listen: false);
+    final detailProvider = Provider.of<DetailProductProvider>(context, listen: false);
+    final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
     detailProvider.getImages(widget.product.idProduct);
     detailProvider.getVariant(widget.product.idProduct);
     detailProvider.getComments(widget.product.idProduct);
+    categoryProvider.getProductOfCategory(widget.product.idCategory);
     super.initState();
   }
 
@@ -57,6 +62,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         onChangeSlider: state.onChangeImageDetail,
                         currentSlider: state.currentImage,
                         images: state.images.data),
+
                     ProductSumary(product: widget.product),
                     ProductVariant(
                       sizes: state.variant.data?.sizes,
@@ -73,11 +79,13 @@ class _DetailScreenState extends State<DetailScreen> {
                       description:
                           widget.product.productDescription.toString(),
                     ),
+                    ProductRelated(idProduct: widget.product.idProduct!),
                     ProductRate(comments: state.comments.data),
                     const SizedBox(height: 60),
                   ],
                     )
-                  : const Text("Loading..."))
+                  : ShimmerLoading().buildShimmerContent()      
+            )
           ),
       bottomSheet: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -96,7 +104,14 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 borderRadius: BorderRadius.circular(100)
               ),           
-              child: const Icon(FluentIcons.chat_16_regular, color: AppColors.primary),
+              child: GestureDetector(
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(
+                  builder: (_) => CommingSoon(
+                    title: "Chat", imageAssetUrl: "assets/images/chat_sticker.png", backButton: true)
+                    )
+                  ),
+                child: const Icon(FluentIcons.chat_16_regular, color: AppColors.primary)
+              ),
             ),
             const SizedBox(width: 20),
             Expanded(

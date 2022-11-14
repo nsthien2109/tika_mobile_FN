@@ -7,9 +7,9 @@ class EmptyResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: widthP(context),
-      height: heightP(context) - 100,
+      height: heightP(context) / 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

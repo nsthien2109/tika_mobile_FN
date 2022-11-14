@@ -43,6 +43,7 @@ class CommingSoon extends StatelessWidget {
               const SizedBox(height: 25),
               backButton! == true ? TikaButton(
                 label: "Back",
+                onTap: ()=> Navigator.pop(context),
                 width: widthP(context) / 2,
                 height: 40,
               ) : const SizedBox.shrink()

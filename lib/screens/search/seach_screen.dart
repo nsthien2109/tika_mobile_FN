@@ -1,12 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tika_store/configs/responsive.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/search_provider.dart';
-import 'package:tika_store/widgets/empty_result/empty_result.dart';
-import 'package:tika_store/widgets/product_grid_card/product_grid_card.dart';
-import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
+import 'package:tika_store/widgets/product_grid_list/product_grid_list.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -47,7 +44,7 @@ class SearchScreen extends StatelessWidget {
                     Positioned(
                       right: 0,
                       child: GestureDetector(
-                        onTap: state.getProducts,
+                        onTap: state.searchProducts,
                         child: Container(
                           height: 45,
                           width: 50,
@@ -76,7 +73,10 @@ class SearchScreen extends StatelessWidget {
                 SliverList(
                     delegate: SliverChildListDelegate(
                     [
-                      _buildSearchResults(context,state.products.data?.data)
+                      ProductGridList(
+                        products: state.products.data?.data,
+                        isLoading: state.loadingProduct,
+                      )
                     ]
                   )
                 ),
@@ -85,31 +85,5 @@ class SearchScreen extends StatelessWidget {
           ),
         )
     );
-  }
-
-  Widget _buildSearchResults(BuildContext context,products){
-    final imageSize = (widthP(context) - 24) / 2 - 12;
-    if(products != null){
-      if(products.length == 0){
-        return const EmptyResult();
-      }
-      return GridView.count(
-          padding: const EdgeInsets.all(10),
-          primary: false,
-          childAspectRatio: 5 / 8,
-          shrinkWrap: true,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          crossAxisCount: 2,
-          children: List.generate(
-            products?.length ?? 0, 
-            (index) => ProductGridCard(
-              product: products![index],
-            )
-          ),
-      );
-    }else{
-      return ShimmerLoading().buildShimmerProduct(imageSize);
-    }
   }
 }

@@ -21,7 +21,9 @@ class TikaButton extends StatelessWidget {
       width: width ?? widthP(context),
       height: height ?? 60,
       child: TextButton(
-        onPressed: () {},
+        onPressed: (){
+          onTap == null ?  null : onTap!();
+        },
         child: Text(label,
         style: const TextStyle(
           color: AppColors.white

@@ -20,7 +20,7 @@ class CategoryMenu extends StatelessWidget {
             height: 180,
             width: widthP(context),
             child: GridView.count(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               mainAxisSpacing: 1,
               crossAxisSpacing: 1,
               shrinkWrap: true,

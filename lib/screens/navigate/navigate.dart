@@ -23,7 +23,6 @@ class NavigateView extends StatelessWidget {
       CommingSoon(
         imageAssetUrl: 'assets/images/notify_sticker.png',
         title: "Notification",
-        backButton: true,
       ),
       const SignInScreen(),
     ];

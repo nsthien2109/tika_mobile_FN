@@ -23,6 +23,7 @@ class DetailProductProvider extends ChangeNotifier {
   DataSize get selectedSize => _selectedSize;
   DataColor get selectedColor => _selectedColor;
 
+
   Future<void> getImages(idProduct) async {
     _loadingDetail = true;
     final ImageModel? images = await ImageService.getImages(idProduct);

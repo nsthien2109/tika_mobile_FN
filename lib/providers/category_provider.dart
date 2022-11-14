@@ -4,13 +4,14 @@ import 'package:tika_store/models/product.dart';
 import 'package:tika_store/services/product_request.dart';
 
 class CategoryProvider extends ChangeNotifier {
-  CategoryModel _categories = CategoryModel();
+  final CategoryModel _categories = CategoryModel();
   ProductModel _products = ProductModel();
-  ScrollController _scrollController = ScrollController();
-  int? _oldCategory = null;
+  final ScrollController _scrollController = ScrollController();
+  int? _oldCategory;
   int _currentSlider = 0;
   int _currentPage = 1;
   bool _loadingProduct = false;
+  final bool _loadSuccess = false;
 
   CategoryModel get categories => _categories;
   ProductModel get products => _products;
@@ -18,21 +19,26 @@ class CategoryProvider extends ChangeNotifier {
   int? get oldCategory => _oldCategory;
   int get currentSlider => _currentSlider;
   bool get loadingProduct => _loadingProduct;
+  bool get loadSuccess => _loadSuccess;
 
+  CategoryProvider() {
+    _scrollController.addListener(onScroll);
+  }
 
   Future getProductOfCategory(idCategory) async {
-    _loadingProduct = false;
-    if(_oldCategory == null){
+    _loadingProduct = true;
+    if (_oldCategory == null) {
       _oldCategory = idCategory;
-    }else if(_oldCategory != idCategory){
+    } else if (_oldCategory != idCategory) {
       _oldCategory = idCategory;
       _currentPage = 1;
-    }    
-    final ProductModel? responseProducts = await ProductService.getProductOfCategory(_currentPage,idCategory);
+    }
+    final ProductModel? responseProducts =
+        await ProductService.getProductOfCategory(_currentPage, idCategory);
     if (_currentPage == 1) {
       _products = responseProducts ?? ProductModel();
       _currentPage += 1;
-      _loadingProduct = true;
+      _loadingProduct = false;
       notifyListeners();
     } else if (_currentPage > 1 && _products.data!.data!.isNotEmpty) {
       _products.message = responseProducts?.message;
@@ -49,9 +55,28 @@ class CategoryProvider extends ChangeNotifier {
       _products.data?.perPage = responseProducts?.data?.perPage;
       _products.data?.total = responseProducts?.data?.total;
       _currentPage += 1;
-      _loadingProduct = true;
+      _loadingProduct = false;
       notifyListeners();
     }
+  }
+
+  // Scroll controller of customviewscroll
+  void onScroll() {
+    double maxScroll = _scrollController.position.maxScrollExtent;
+    double currentScroll = _scrollController.position.pixels;
+    if (currentScroll == maxScroll) {
+      if (_products.message == "Success") {
+        if (_currentPage <= _products.data!.lastPage!) {
+          _loadingProduct = false;
+          getProductOfCategory(_oldCategory);
+        }
+        if (_currentPage == _products.data!.lastPage) {
+          _loadingProduct = true;
+        }
+      }
+      notifyListeners();
+    }
+    notifyListeners();
   }
 
   void onChangeSlider(value) {

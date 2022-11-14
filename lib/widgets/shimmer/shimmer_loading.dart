@@ -230,4 +230,77 @@ class ShimmerLoading {
       ),
     );
   }
+
+  Widget buildShimmerDetailProduct(boxImageSize) {
+    return SizedBox(
+      width: boxImageSize,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: 3,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
+                child: Shimmer.fromColors(
+                  highlightColor: Colors.white,
+                  baseColor: AppColors.shimmerColor,
+                  period: const Duration(milliseconds: 1000),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    child: Container(
+                      width: boxImageSize,
+                      height: boxImageSize,
+                      color: AppColors.shimmerColor,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+
+          Container(
+            color: AppColors.white,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.shimmerColor),
+                  height: 12,
+                  width: 50,
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.shimmerColor),
+                  height: 12,
+                  width: 100,
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.shimmerColor),
+                  height: 12,
+                  width: 100,
+                ),
+              ],
+            ),
+          )
+
+        ],
+      ),
+    );
+  }
 }

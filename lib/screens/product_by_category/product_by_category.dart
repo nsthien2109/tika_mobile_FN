@@ -8,8 +8,7 @@ import 'package:tika_store/configs/responsive.dart';
 import 'package:tika_store/models/category.dart';
 import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/widgets/cache_image/cache_image_network.dart';
-import 'package:tika_store/widgets/product_grid_card/product_grid_card.dart';
-import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
+import 'package:tika_store/widgets/product_grid_list/product_grid_list.dart';
 
 class ProductByCategory extends StatefulWidget {
   DataCategory category;
@@ -30,7 +29,6 @@ class _ProductByCategoryState extends State<ProductByCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final imageSize = (widthP(context) - 24) / 2 - 12;
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.category.categoryName}"),
@@ -59,19 +57,10 @@ class _ProductByCategoryState extends State<ProductByCategory> {
                             child: cacheImageNetwork(
                                 url: '$server/${widget.category.categoryImage}'),
                           ),
-                          state.products.data?.data != null ? GridView.count(
-                            padding: const EdgeInsets.all(10),
-                            primary: false,
-                            childAspectRatio: 5 / 8,
-                            shrinkWrap: true,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            crossAxisCount: 2,
-                            children: List.generate(
-                                state.products.data?.data?.length ?? 0,
-                                (index) => ProductGridCard(
-                                    product: state.products.data!.data![index])),
-                          ) : ShimmerLoading().buildShimmerProduct(imageSize)
+                          ProductGridList(
+                            products: state.products.data?.data,
+                            isLoading: state.loadingProduct,
+                          )
                         ]
                       )
                     ),
