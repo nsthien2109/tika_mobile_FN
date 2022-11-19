@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tika_store/configs/theme.dart';
 
-class TextInput extends StatelessWidget {
+class TextInputNoBorder extends StatelessWidget {
   String labelText;
   TextEditingController? controller;
   Function(String value)? onChanged;
@@ -11,7 +11,7 @@ class TextInput extends StatelessWidget {
   IconData? icon;
   bool? obscureText;
   Function? changeObscureText;
-  TextInput({
+  TextInputNoBorder({
     Key? key,
     required this.labelText ,
     this.controller, 
@@ -32,19 +32,31 @@ class TextInput extends StatelessWidget {
       style: const TextStyle(color: AppColors.greyDarker),
       onChanged: onChanged,
       decoration:  InputDecoration(
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.primary, width: 2.0)),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.greyLighter),
+        filled: true,
+        fillColor: AppColors.white,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: AppColors.white, width: 2.0)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.white),
         ),
-        labelText: labelText,
-        labelStyle: const TextStyle(
+        hintText: labelText,
+        hintStyle: const TextStyle(
           color: AppColors.blackLighter, 
-          fontSize: 12
         ),
         suffixIcon: GestureDetector(
           onTap: ()=> changeObscureText != null ? changeObscureText!() : null,
-          child: Icon(icon)
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(.8),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: Icon(
+              icon,
+              color: AppColors.white,
+            )
+          )
         )
       ),
     );

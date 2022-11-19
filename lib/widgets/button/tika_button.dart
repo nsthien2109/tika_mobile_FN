@@ -8,26 +8,27 @@ class TikaButton extends StatelessWidget {
   String label;
   double? width;
   double? height;
-  Function? onTap;
-  TikaButton({Key? key, required this.label ,this.width, this.height, this.onTap}) : super(key: key);
+  Function() onTap;
+  bool? isLoading;
+  TikaButton({Key? key, required this.label ,this.width, this.height,required this.onTap, this.isLoading = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: AppColors.primary
+        color:  isLoading == false ? AppColors.primary : AppColors.primary.withOpacity(.8)
       ),
       width: width ?? widthP(context),
       height: height ?? 60,
       child: TextButton(
-        onPressed: (){
-          onTap == null ?  null : onTap!();
-        },
-        child: Text(label,
-        style: const TextStyle(
-          color: AppColors.white
-        ),
+        onPressed: onTap,
+        child: isLoading == false ? Text(label,
+          style: const TextStyle(
+            color: AppColors.white
+          ),
+        ) : const CircularProgressIndicator.adaptive(
+          backgroundColor: AppColors.white,
         ),
       ),
     );

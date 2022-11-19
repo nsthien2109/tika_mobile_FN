@@ -6,6 +6,7 @@ import 'package:tika_store/screens/auth/sign_up_screen.dart';
 import 'package:tika_store/screens/detail/detail_screen.dart';
 import 'package:tika_store/screens/navigate/navigate.dart';
 import 'package:tika_store/screens/product_by_category/product_by_category.dart';
+import 'package:tika_store/screens/profile/ProfileChangeInformation/profile_change_info.dart';
 import 'package:tika_store/screens/search/seach_screen.dart';
 
 class AppRouter {
@@ -15,7 +16,8 @@ class AppRouter {
   static const String signUpRoute = '/sign_up';
   static const String searchRouter = '/search';
   static const String detailRouter = '/detail'; 
-  static const String categoryRouter = '/category'; 
+  static const String categoryRouter = '/category';
+  static const String changeProfileInfo = '/edit_profile_info';  
   static const String cartRouter = '/cart'; 
 
 
@@ -51,6 +53,11 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ProductByCategory(category: settings.arguments as DataCategory),
+        );
+      case changeProfileInfo:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProfileChangeInfo(),
         );
       default:
         return MaterialPageRoute(

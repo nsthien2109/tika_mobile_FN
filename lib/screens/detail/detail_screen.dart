@@ -115,7 +115,11 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
             const SizedBox(width: 20),
             Expanded(
-              child: TikaButton(label: "Add to cart", height: 50)
+              child: TikaButton(
+                label: "Add to cart", 
+                height: 50,
+                onTap: (){},
+              )
             )
           ],
         ),

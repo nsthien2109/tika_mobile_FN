@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tika_store/configs/config.dart';
 import 'package:tika_store/configs/responsive.dart';
+import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/banner.dart';
 import 'package:tika_store/widgets/cache_image/cache_image_network.dart';
 import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
@@ -23,7 +24,7 @@ class SlideShow extends StatelessWidget {
             children: [
               CarouselSlider(
                 items: banners?.map((item) => GestureDetector(
-                    onTap: () => Fluttertoast.showToast(msg: 'Click banner ${item.idBanner}',toastLength: Toast.LENGTH_SHORT),
+                    onTap: () => TikaToast.showToast(context, 'Click banner ${item.idBanner}'),
                     child: cacheImageNetwork(width: widthP(context), height: 0, url: '$server/${item.bannerImage}'))).toList(),
                 options: CarouselOptions(
                   aspectRatio: 2,

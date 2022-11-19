@@ -14,3 +14,15 @@ class AppColors {
   static const shimmerColor = Color(0xFFEEEEEE);
   static const shimmerColorDarker = Color(0xFF9E9E9E);
 }
+
+class TikaToast {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showToast(context,toastText) {
+    final snackBar = SnackBar(
+        elevation: 3,
+        backgroundColor: AppColors.primary,
+        behavior: SnackBarBehavior.floating,
+        content: Text(toastText)
+    );
+    return ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+}

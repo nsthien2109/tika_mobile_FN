@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
+import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/providers/banner_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/providers/navigate_provider.dart';
+import 'package:tika_store/providers/profile_provider.dart';
 import 'package:tika_store/providers/search_provider.dart';
 
 import 'routers/router.dart';
@@ -27,12 +29,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => NavigateProvider()),
         ChangeNotifierProvider(create: (_) => BannerProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => DetailProductProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
