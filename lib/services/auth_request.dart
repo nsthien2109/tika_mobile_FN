@@ -88,5 +88,40 @@ class AuthService {
     return AuthModel(message: userData['message']);
   }
 
+  static Future<AuthModel> updateUser(token, userData) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$domain/user-update"),
+        headers : <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String ,String>{...userData})
+      );
+      if(response.statusCode == 200){
+        final userResponseData = json.decode(response.body);
+        return AuthModel(
+          message: userResponseData['message'],
+          data: DataUser(
+            id: userResponseData['data']['id'],
+            email: userResponseData['data']['email'],
+            firstName: userResponseData['data']['firstName'],
+            lastName: userResponseData['data']['lastName'],
+            phone: userResponseData['data']['phone'],
+            role: userResponseData['data']['role'],
+            emailVerifiedAt: userResponseData['data']['email_verified_at'],
+          ),
+          accessToken: userResponseData['accessToken'],
+          type: userResponseData['type']
+        );
+      }else{
+        final userResponseData = json.decode(response.body);
+        return AuthModel(message: userResponseData['message']);
+      }
+    } catch (e) {
+      debugPrint("Auth service error: $e");
+      return AuthModel(message: "Something went wrong");
+    }
+  }
 
 }

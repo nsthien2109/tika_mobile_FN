@@ -4,8 +4,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
+import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/providers/navigate_provider.dart';
-import 'package:tika_store/providers/profile_provider.dart';
 import 'package:tika_store/screens/auth/sign_in_screen.dart';
 import 'package:tika_store/screens/home/home_screen.dart';
 import 'package:tika_store/screens/order/order_screen.dart';
@@ -17,7 +17,7 @@ class NavigateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<NavigateProvider,ProfileProvider>(builder: (context, navState, profileState, __) {
+    return Consumer2<NavigateProvider,AuthProvider>(builder: (context, navState, authState, __) {
       return Scaffold(
         body: PageView(
           onPageChanged: (value) => navState.onChangeTabPage(value),
@@ -28,9 +28,9 @@ class NavigateView extends StatelessWidget {
           children: [
             const HomeScreen(),
             CommingSoon(imageAssetUrl: 'assets/images/chat_sticker.png',title: "Chat"),
-            const OrderScreen(),
+            authState.uid != null ? const OrderScreen() : const SignInScreen(),
             CommingSoon(imageAssetUrl: 'assets/images/notify_sticker.png', title: "Notification"),
-            profileState.uid != null ? const ProfileScreen() : const SignInScreen()
+            authState.uid != null ? const ProfileScreen() : const SignInScreen()
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

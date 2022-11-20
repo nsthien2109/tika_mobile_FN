@@ -13,6 +13,7 @@ class AuthProvider extends ProfileProvider {
   bool _obscureText = true;
   final _formKeySignIn = GlobalKey<FormState>();
   final _formKeySignUp = GlobalKey<FormState>();
+  final _formKeyUpdate = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -31,6 +32,7 @@ class AuthProvider extends ProfileProvider {
   TextEditingController get rePasswordController => _rePasswordController;
   GlobalKey<FormState> get formKeySignIn => _formKeySignIn;
   GlobalKey<FormState> get formKeySignUp => _formKeySignUp;
+  GlobalKey<FormState> get formKeyUpdate => _formKeyUpdate;
 
   Future<void> login(context) async {
     try {
@@ -48,7 +50,7 @@ class AuthProvider extends ProfileProvider {
               "${_account!.data!.firstName} ${_account!.data!.lastName}");
           await setStringStorage('email_user', _account!.data!.email);
           await setStringStorage('accessToken', _account!.accessToken);
-          getStoredProfile();
+          getStoredProfile().then((value) => print("UID => $uid"));
         }
         TikaToast.showToast(context, accountData!.message);
         clearInput();
@@ -57,6 +59,39 @@ class AuthProvider extends ProfileProvider {
       }
     } catch (e) {
       debugPrint("Error in login provider $e");
+    }
+  }
+
+  Future<void> updateUser(context) async {
+    try {
+      _loadingAuth = true;
+      if (_formKeyUpdate.currentState!.validate()) {
+        final userData = <String, String>{
+          "firstName" : _firstNameController.text,
+          "lastName" : _lastNameController.text,
+          "email": _emailController.text,
+          "phone": _phoneController.text,
+          "currentPassword": _passwordController.text,
+          "newPassword" : _rePasswordController.text
+        };
+        print(userData);
+        final token = await getStringStorage('accessToken');
+        final accountData = await AuthService.updateUser(token, userData);
+        _account = accountData;
+        if (accountData.data != null && accountData.data?.id != null) {
+          await setStringStorage('id_user', _account!.data!.id.toString());
+          await setStringStorage('name_user',"${_account!.data!.firstName} ${_account!.data!.lastName}");
+          await setStringStorage('email_user', _account!.data!.email);
+          await setStringStorage('accessToken', _account!.accessToken);
+          getStoredProfile().then((value) => print("UID => $uid"));
+        }
+        Navigator.pop(context);
+        TikaToast.showToast(context, accountData.message);
+        _loadingAuth = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("Error in update user provider $e");
     }
   }
 
@@ -99,7 +134,7 @@ class AuthProvider extends ProfileProvider {
     try {
       final token = await getStringStorage('accessToken');
       final logoutData = await AuthService.logout(token);
-      logoutProfile();
+      await logoutProfile();
       _account = logoutData;
       _loadingAuth = false;
       notifyListeners();

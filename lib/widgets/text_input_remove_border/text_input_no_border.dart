@@ -11,6 +11,7 @@ class TextInputNoBorder extends StatelessWidget {
   IconData? icon;
   bool? obscureText;
   Function? changeObscureText;
+  String? initialValue;
   TextInputNoBorder({
     Key? key,
     required this.labelText ,
@@ -19,12 +20,14 @@ class TextInputNoBorder extends StatelessWidget {
     this.onChanged, 
     required this.validator, 
     this.obscureText,
-    this.changeObscureText
+    this.changeObscureText,
+    this.initialValue
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       obscureText: obscureText ?? false,
       validator: (value) => validator(value!),
       keyboardType: TextInputType.emailAddress,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tika_store/models/address.dart';
+import 'package:tika_store/models/auth.dart';
 import 'package:tika_store/models/category.dart';
 import 'package:tika_store/models/product.dart';
 import 'package:tika_store/screens/auth/sign_in_screen.dart';
@@ -6,7 +8,10 @@ import 'package:tika_store/screens/auth/sign_up_screen.dart';
 import 'package:tika_store/screens/detail/detail_screen.dart';
 import 'package:tika_store/screens/navigate/navigate.dart';
 import 'package:tika_store/screens/product_by_category/product_by_category.dart';
+import 'package:tika_store/screens/profile/ProfileAddress/profile_address.dart';
+import 'package:tika_store/screens/profile/ProfileAddress/profile_change_address.dart';
 import 'package:tika_store/screens/profile/ProfileChangeInformation/profile_change_info.dart';
+import 'package:tika_store/screens/profile/ProfileWishlist/profile_wishlist.dart';
 import 'package:tika_store/screens/search/seach_screen.dart';
 
 class AppRouter {
@@ -19,6 +24,9 @@ class AppRouter {
   static const String categoryRouter = '/category';
   static const String changeProfileInfo = '/edit_profile_info';  
   static const String cartRouter = '/cart'; 
+  static const String addressRouter = '/address'; 
+  static const String editAddressRouter = '/edit_address'; 
+  static const String wishlistRouter = '/wishlist'; 
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -57,7 +65,22 @@ class AppRouter {
       case changeProfileInfo:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => ProfileChangeInfo(),
+          builder: (_) => ProfileChangeInfo(user: settings.arguments as DataUser),
+        );
+      case addressRouter:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProfileAddress(address: settings.arguments == null ? null : settings.arguments as DataAddress),
+        );
+      case editAddressRouter:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProfileChangeAddress(address: settings.arguments as DataAddress),
+        );
+      case wishlistRouter:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProfileWishList(),
         );
       default:
         return MaterialPageRoute(
