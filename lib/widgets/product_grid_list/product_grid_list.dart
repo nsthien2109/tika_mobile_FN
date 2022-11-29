@@ -20,7 +20,7 @@ class ProductGridList extends StatelessWidget {
     }
     if(products != null){
       if(products?.length == 0){
-        return const EmptyResult();
+        return EmptyResult(title: "No products found");
       }
       return GridView.count(
           padding: const EdgeInsets.all(10),

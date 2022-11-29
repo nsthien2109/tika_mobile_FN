@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:tika_store/models/address.dart';
 import 'package:tika_store/models/auth.dart';
 import 'package:tika_store/models/category.dart';
+import 'package:tika_store/models/order.dart';
 import 'package:tika_store/models/product.dart';
 import 'package:tika_store/screens/auth/sign_in_screen.dart';
 import 'package:tika_store/screens/auth/sign_up_screen.dart';
+import 'package:tika_store/screens/cart/cart_screen.dart';
 import 'package:tika_store/screens/detail/detail_screen.dart';
 import 'package:tika_store/screens/navigate/navigate.dart';
+import 'package:tika_store/screens/order_detail/order_detail_screen.dart';
 import 'package:tika_store/screens/product_by_category/product_by_category.dart';
 import 'package:tika_store/screens/profile/ProfileAddress/profile_address.dart';
 import 'package:tika_store/screens/profile/ProfileAddress/profile_change_address.dart';
@@ -27,6 +30,7 @@ class AppRouter {
   static const String addressRouter = '/address'; 
   static const String editAddressRouter = '/edit_address'; 
   static const String wishlistRouter = '/wishlist'; 
+  static const String orderDetailRouter = '/order_detail'; 
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -81,6 +85,16 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ProfileWishList(),
+        );
+      case cartRouter:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const CartScreen(),
+        );
+      case orderDetailRouter:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => OrderDetailScreen(dataOrder: settings.arguments as DataOrder),
         );
       default:
         return MaterialPageRoute(

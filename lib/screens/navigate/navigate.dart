@@ -28,7 +28,7 @@ class NavigateView extends StatelessWidget {
           children: [
             const HomeScreen(),
             CommingSoon(imageAssetUrl: 'assets/images/chat_sticker.png',title: "Chat"),
-            authState.uid != null ? const OrderScreen() : const SignInScreen(),
+            authState.uid != null ? OrderScreen() : const SignInScreen(),
             CommingSoon(imageAssetUrl: 'assets/images/notify_sticker.png', title: "Notification"),
             authState.uid != null ? const ProfileScreen() : const SignInScreen()
           ],

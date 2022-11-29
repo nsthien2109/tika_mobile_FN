@@ -8,7 +8,8 @@ import 'package:tika_store/models/product.dart';
 
 class ProductSumary extends StatelessWidget {
   DataProduct product;
-  ProductSumary({Key? key, required this.product}) : super(key: key);
+  bool isFavorited;
+  ProductSumary({Key? key, required this.product, required this.isFavorited}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +26,12 @@ class ProductSumary extends StatelessWidget {
                 "\$ ${product.productPrice}",
                 style: AppStyle.detailProductPrice,
               ),
-              GestureDetector(
+              isFavorited == true ? GestureDetector(
                 onTap: () {},
-                child: const Icon(FluentIcons.heart_16_regular),
-              )
+                child: const Icon(FluentIcons.heart_16_filled, color: AppColors.red,),
+              ) : GestureDetector(
+                onTap: () {},
+                child: const Icon(FluentIcons.heart_16_regular))
             ],
           ),
           const SizedBox(height: 12),

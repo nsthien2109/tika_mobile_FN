@@ -6,10 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/providers/banner_provider.dart';
+import 'package:tika_store/providers/cart_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/providers/navigate_provider.dart';
+import 'package:tika_store/providers/order_provider.dart';
 import 'package:tika_store/providers/profile_provider.dart';
 import 'package:tika_store/providers/search_provider.dart';
 
@@ -37,6 +39,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DetailProductProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

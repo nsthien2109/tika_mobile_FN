@@ -3,9 +3,10 @@ import 'package:tika_store/configs/share_prefs.dart';
 import 'package:tika_store/models/address.dart';
 import 'package:tika_store/models/auth.dart';
 import 'package:tika_store/models/wishlist.dart';
+import 'package:tika_store/providers/cart_provider.dart';
 import 'package:tika_store/services/profile_request.dart';
 
-class ProfileProvider extends ChangeNotifier {
+class ProfileProvider extends CartProvider {
   int? _uid; // user id
   String? _uname; // user name
   String? _uemail; // user email
@@ -56,6 +57,9 @@ class ProfileProvider extends ChangeNotifier {
       _uid = int.parse(userId);
       getProfile();
       getAddress();
+      getCart();
+      getOrders();
+      getWishList();
     }
     _uname = userName;
     _uemail = userEmail;

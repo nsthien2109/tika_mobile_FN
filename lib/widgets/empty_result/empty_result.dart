@@ -1,9 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tika_store/configs/responsive.dart';
 
 class EmptyResult extends StatelessWidget {
-  const EmptyResult({Key? key}) : super(key: key);
+  String title;
+  EmptyResult({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class EmptyResult extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           LottieBuilder.asset('assets/images/empty_lottie.json'),
-          const Text("No results found")
+          Text(title)
         ],
       ),
     );

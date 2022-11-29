@@ -1,12 +1,14 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_null_in_if_null_operators
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/product.dart';
+import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
+import 'package:tika_store/providers/profile_provider.dart';
 import 'package:tika_store/screens/detail/ProductDescription/product_description.dart';
 import 'package:tika_store/screens/detail/ProductImageSlider/product_image_slider.dart';
 import 'package:tika_store/screens/detail/ProductInfomation/product_infomation.dart';
@@ -40,90 +42,108 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(FluentIcons.heart_16_regular)),
-          IconButton(
-              onPressed: () {}, icon: const Icon(FluentIcons.share_16_regular)),
-          IconButton(
-              onPressed: () {}, icon: const Icon(FluentIcons.cart_16_regular))
-        ],
-      ),
-      body: SafeArea(
-          child: Consumer<DetailProductProvider>(
-              builder: (_, state, __) => state.loadingDetail == false
-                  ? ListView(
-                  shrinkWrap: true,
-                  children: [
-                    ProductImageSlider(
-                        onChangeSlider: state.onChangeImageDetail,
-                        currentSlider: state.currentImage,
-                        images: state.images.data),
-
-                    ProductSumary(product: widget.product),
-                    ProductVariant(
-                      sizes: state.variant.data?.sizes,
-                      colors: state.variant.data?.colors,
-                      selectedSize: state.selectedSize,
-                      selectedColor: state.selectedColor,
-                      onChangeSize: state.onChangeSize,
-                      onChangeColor: state.onChangeColor,
-                    ),
-                    ProductInfomation(
-                      product: widget.product,
-                    ),
-                    ProductDescription(
-                      description:
-                          widget.product.productDescription.toString(),
-                    ),
-                    ProductRelated(idProduct: widget.product.idProduct!),
-                    ProductRate(comments: state.comments.data),
-                    const SizedBox(height: 60),
-                  ],
-                    )
-                  : ShimmerLoading().buildShimmerContent()      
-            )
+    return Consumer3<DetailProductProvider, ProfileProvider, AuthProvider>(
+      builder: (context,detailState,wishlistState,cartState,__) {
+        final checkWishList = wishlistState.wishlist!.data?.where((element) => element.idProduct == widget.product.idProduct) ?? null;
+        final checkCart = cartState.cartList.data?.where((element) => element.idProduct == widget.product.idProduct) ?? null;
+        
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: AppBar(
+            actions: [
+              checkWishList?.isEmpty == true ? IconButton(
+                  onPressed: () {}, icon: const Icon(FluentIcons.heart_16_regular)) :
+              IconButton(
+                  onPressed: () {}, icon: const Icon(FluentIcons.heart_16_filled), color: AppColors.red,),
+              IconButton(
+                  onPressed: () {}, icon: const Icon(FluentIcons.share_16_regular)),
+              IconButton(
+                  onPressed: () {}, icon: const Icon(FluentIcons.cart_16_regular))
+            ],
           ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        color: AppColors.white,
-        height: 70,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 50,
-              height: 50,  
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                border: Border.all(
-                  color: AppColors.primary
-                ),
-                borderRadius: BorderRadius.circular(100)
-              ),           
-              child: GestureDetector(
-                onTap: ()=> Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => CommingSoon(
-                    title: "Chat", imageAssetUrl: "assets/images/chat_sticker.png", backButton: true)
-                    )
-                  ),
-                child: const Icon(FluentIcons.chat_16_regular, color: AppColors.primary)
+          body: SafeArea(
+              child:  detailState.loadingDetail == false
+                      ? ListView(
+                      shrinkWrap: true,
+                      children: [
+                        ProductImageSlider(
+                            onChangeSlider: detailState.onChangeImageDetail,
+                            currentSlider: detailState.currentImage,
+                            images: detailState.images.data),
+
+                        ProductSumary(product: widget.product, isFavorited: checkWishList?.isEmpty == true ? false : true),
+                        ProductVariant(
+                          sizes: detailState.variant.data?.sizes,
+                          colors: detailState.variant.data?.colors,
+                          selectedSize: detailState.selectedSize,
+                          selectedColor: detailState.selectedColor,
+                          onChangeSize: detailState.onChangeSize,
+                          onChangeColor: detailState.onChangeColor,
+                        ),
+                        ProductInfomation(
+                          product: widget.product,
+                        ),
+                        ProductDescription(
+                          description:
+                              widget.product.productDescription.toString(),
+                        ),
+                        ProductRelated(idProduct: widget.product.idProduct!),
+                        ProductRate(comments: detailState.comments.data),
+                        const SizedBox(height: 60),
+                      ],
+                        )
+                      : ShimmerLoading().buildShimmerContent()      
               ),
+          bottomSheet: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            color: AppColors.white,
+            height: 70,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,  
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    border: Border.all(
+                      color: AppColors.primary
+                    ),
+                    borderRadius: BorderRadius.circular(100)
+                  ),           
+                  child: GestureDetector(
+                    onTap: ()=> Navigator.push(context, MaterialPageRoute(
+                      builder: (_) => CommingSoon(
+                        title: "Chat", imageAssetUrl: "assets/images/chat_sticker.png", backButton: true)
+                        )
+                      ),
+                    child: const Icon(FluentIcons.chat_16_regular, color: AppColors.primary)
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: checkCart?.isEmpty == true ? TikaButton(
+                    label: "Add to cart", 
+                    height: 50,
+                    onTap: ()=>cartState.addtoCart(
+                      {
+                        'id_product' : widget.product.idProduct,
+                        'id_size' : detailState.selectedSize.idSize,
+                        'id_color' : detailState.selectedColor.idColor,
+                        'quantity' : 1
+                      }
+                    ),
+                  ) : TikaButton(
+                    label: "View in cart", 
+                    height: 50,
+                    onTap: (){},
+                  )
+                )
+              ],
             ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: TikaButton(
-                label: "Add to cart", 
-                height: 50,
-                onTap: (){},
-              )
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 }

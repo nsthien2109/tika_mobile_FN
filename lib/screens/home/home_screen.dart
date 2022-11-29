@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
+import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/screens/home/category/category_menu.dart';
 import 'package:tika_store/screens/home/recommended/recommended_product.dart';
@@ -17,8 +18,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Consumer<HomeProvider>(
-          builder: (_,state,__) {
+        child: Consumer2<HomeProvider,AuthProvider>(
+          builder: (_,state,state2,__) {
             return RefreshIndicator(
               color: AppColors.primary,
               strokeWidth: 1,
@@ -39,9 +40,31 @@ class HomeScreen extends StatelessWidget {
                           style: const TextStyle(
                               fontFamily: 'TitanOne', color: AppColors.primary),
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(FluentIcons.cart_16_regular))
+                        GestureDetector(
+                            onTap: ()=> Navigator.pushNamed(context, '/cart'),
+                            child: Stack(
+                              children: [
+                                const Icon(FluentIcons.cart_16_regular, size: 30,),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 15,
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red, 
+                                      borderRadius: BorderRadius.circular(20)
+                                    ),
+                                    child: Text("${state2.cartList.data?.length}", style: const TextStyle(
+                                      fontSize: 7, 
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.white
+                                    ),),
+                                  ),
+                                )
+                              ],
+                            ))
                       ],
                     ),
                     floating: true,
