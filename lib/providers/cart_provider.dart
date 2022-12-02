@@ -1,20 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tika_store/configs/share_prefs.dart';
 import 'package:tika_store/models/cart.dart';
+import 'package:tika_store/models/coupon.dart';
 import 'package:tika_store/providers/order_provider.dart';
 import 'package:tika_store/services/cart_request.dart';
+import 'package:tika_store/services/coupon_request.dart';
 
 class CartProvider extends OrderProvider {
   CartModel _cartList = CartModel();
+  CouponModel _coupon = CouponModel();
   bool? _cartLoading = false;
+  TextEditingController _couponController = TextEditingController();
+  final _formKeyCoupon = GlobalKey<FormState>();
 
   CartModel get cartList => _cartList;
+  CouponModel get coupon => _coupon;
   bool? get cartLoading => _cartLoading;
+  TextEditingController get couponController => _couponController;
+  GlobalKey<FormState> get formKeyCoupon => _formKeyCoupon;
 
   double? get totalCart {
-    if (!_cartList.data!.isNotEmpty) {
+    if (_cartList.data?.isEmpty == true || _cartList.data == null) {
       return 0.0;
-    }else{
+    } else {
       return _cartList.data?.map((item) => item.productPrice! * (item.quantity as num)).reduce((value, current) => value + current) ?? 0.0;
     }
   }
@@ -37,28 +45,25 @@ class CartProvider extends OrderProvider {
     _cartLoading = true;
     try {
       final token = await getStringStorage('accessToken');
-      final responseCart = await CartService.addCart(cartData, token);
-      final checkCart = _cartList.data
-          ?.where((element) => element.idProduct == responseCart.idProduct);
-      if (checkCart?.isEmpty == true && responseCart.idCart != null) {
-        print("CHECK TRUE");
-        _cartList.data?.add(responseCart);
-        _cartLoading = false;
-        notifyListeners();
-      } else if (responseCart.idCart != null) {
-        print("CHECK FALSE");
-        for (var cart in _cartList.data!) {
-          if (cart.idProduct == responseCart.idProduct) {
-            cart.quantity = cart.quantity ?? 0 + 1;
-            _cartLoading = false;
-            notifyListeners();
-            break;
-          }
-        }
-      }
+      await CartService.addCart(cartData, token);
+      getCart();
     } catch (e) {
       _cartLoading = false;
       debugPrint("Sai ở thêm vào giỏ hàng provider : ---> $e");
+    }
+  }
+
+  void removeCart(idCart) async {
+    _cartLoading = true;
+    try {
+      final token = await getStringStorage('accessToken');
+      final removeCartResponse = await CartService.removeCart(token, idCart);
+      _cartList.data?.removeWhere((cart) => cart.idCart == removeCartResponse);
+      _cartLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _cartLoading = false;
+      debugPrint("Sai ở xoa sp giỏ hàng provider : ---> $e");
     }
   }
 
@@ -83,6 +88,19 @@ class CartProvider extends OrderProvider {
         }
         break;
       }
+    }
+  }
+
+  void checkCouponCode() async {
+    _cartLoading = true;
+    try {
+      final responseCoupon = await CouponService.checkCoupon(_couponController.text);
+      _coupon = responseCoupon ?? CouponModel();
+      _cartLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _cartLoading = false;
+      debugPrint("Check coupon failed provider: $e");
     }
   }
 }

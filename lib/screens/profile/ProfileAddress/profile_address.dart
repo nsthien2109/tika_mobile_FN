@@ -1,35 +1,43 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tika_store/configs/styles.dart';
 import 'package:tika_store/models/address.dart';
+import 'package:tika_store/providers/profile_provider.dart';
 
 class ProfileAddress extends StatelessWidget {
-  DataAddress? address;
-  ProfileAddress({Key? key, this.address}) : super(key: key);
+  ProfileAddress({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Set Address"),
-        centerTitle: false,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(
-              FluentIcons.add_16_filled,
-              size: 20,
-            ),
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-             address?.idAddress != null ? _buildAddressCard(context,address!) : const SizedBox.shrink()
+    return Consumer<ProfileProvider>(
+      builder: (context,state,__) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Set Address"),
+            centerTitle: false,
+            actions: [
+              state.address?.data?.idAddress == null ? Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                  onTap: ()=> Navigator.pushNamed(context, '/add_address'),
+                  child: const Icon(
+                    FluentIcons.add_16_filled,
+                    size: 20,
+                  ),
+                ),
+              ) : const SizedBox.shrink()
             ],
-        ),
-      ),
+          ),
+          body: SafeArea(
+            child: Column(
+              children: [
+                 state.address?.data?.idAddress != null ? _buildAddressCard(context,state.address!.data!) : const SizedBox.shrink()
+                ],
+            ),
+          ),
+        );
+      }
     );
   }
 
@@ -82,13 +90,7 @@ class ProfileAddress extends StatelessWidget {
                         onTap: ()=> Navigator.pushNamed(context, '/edit_address', arguments: address),
                         child:
                             const Text('Edit', style: AppStyle.addressAction),
-                      ),
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {},
-                        child:
-                            const Text('Delete', style: AppStyle.addressAction),
-                      ),
+                      ),                      
                     ],
                   ))
             ],

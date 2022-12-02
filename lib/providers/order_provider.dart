@@ -5,7 +5,6 @@ import 'package:tika_store/models/order_detail.dart';
 import 'package:tika_store/services/order_request.dart';
 
 class OrderProvider extends ChangeNotifier {
-  
   OrderModel _orderList = OrderModel();
   OrderDetailModel _orderDetail = OrderDetailModel();
   bool? _orderLoading = false;
@@ -32,14 +31,14 @@ class OrderProvider extends ChangeNotifier {
     _orderLoading = true;
     try {
       final token = await getStringStorage('accessToken');
-      final responseOrderDetail = await OrderService.getOrderDetail(token,id);
+      final responseOrderDetail = await OrderService.getOrderDetail(token, id);
       _orderDetail = responseOrderDetail;
       _orderLoading = false;
       notifyListeners();
     } catch (e) {
+      _orderLoading = false;
+      notifyListeners();
       debugPrint("Getting order detail failed provider : $e");
     }
   }
-
-
 }

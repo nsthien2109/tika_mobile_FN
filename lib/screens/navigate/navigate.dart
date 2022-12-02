@@ -9,7 +9,9 @@ import 'package:tika_store/providers/navigate_provider.dart';
 import 'package:tika_store/screens/auth/sign_in_screen.dart';
 import 'package:tika_store/screens/home/home_screen.dart';
 import 'package:tika_store/screens/order/order_screen.dart';
+import 'package:tika_store/screens/order/order_without_login_screen.dart';
 import 'package:tika_store/screens/profile/profile_screen.dart';
+import 'package:tika_store/screens/profile/profile_without_login_screen.dart';
 import 'package:tika_store/widgets/comming_soon/comming_soon.dart';
 
 class NavigateView extends StatelessWidget {
@@ -28,9 +30,9 @@ class NavigateView extends StatelessWidget {
           children: [
             const HomeScreen(),
             CommingSoon(imageAssetUrl: 'assets/images/chat_sticker.png',title: "Chat"),
-            authState.uid != null ? OrderScreen() : const SignInScreen(),
+            authState.uid != null ? OrderScreen() : const OrderWithoutLoginScreen(),
             CommingSoon(imageAssetUrl: 'assets/images/notify_sticker.png', title: "Notification"),
-            authState.uid != null ? const ProfileScreen() : const SignInScreen()
+            authState.uid != null ? const ProfileScreen() : const ProfileWithoutLoginScreen()
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

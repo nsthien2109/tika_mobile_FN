@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tika_store/configs/styles.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/order.dart';
+import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/providers/order_provider.dart';
 import 'package:tika_store/screens/order_detail/OrderDetailItemCard/order_detail_item_card.dart';
 import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';

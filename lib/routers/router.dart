@@ -11,6 +11,7 @@ import 'package:tika_store/screens/detail/detail_screen.dart';
 import 'package:tika_store/screens/navigate/navigate.dart';
 import 'package:tika_store/screens/order_detail/order_detail_screen.dart';
 import 'package:tika_store/screens/product_by_category/product_by_category.dart';
+import 'package:tika_store/screens/profile/ProfileAddress/profile_add_address.dart';
 import 'package:tika_store/screens/profile/ProfileAddress/profile_address.dart';
 import 'package:tika_store/screens/profile/ProfileAddress/profile_change_address.dart';
 import 'package:tika_store/screens/profile/ProfileChangeInformation/profile_change_info.dart';
@@ -29,6 +30,7 @@ class AppRouter {
   static const String cartRouter = '/cart'; 
   static const String addressRouter = '/address'; 
   static const String editAddressRouter = '/edit_address'; 
+  static const String addAddressRouter = '/add_address'; 
   static const String wishlistRouter = '/wishlist'; 
   static const String orderDetailRouter = '/order_detail'; 
 
@@ -74,7 +76,7 @@ class AppRouter {
       case addressRouter:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => ProfileAddress(address: settings.arguments == null ? null : settings.arguments as DataAddress),
+          builder: (_) => ProfileAddress(),
         );
       case editAddressRouter:
         return MaterialPageRoute(
@@ -95,6 +97,11 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => OrderDetailScreen(dataOrder: settings.arguments as DataOrder),
+        );
+      case addAddressRouter:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProfileAddAddress(),
         );
       default:
         return MaterialPageRoute(

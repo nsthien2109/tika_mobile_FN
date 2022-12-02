@@ -35,27 +35,26 @@ class ProfileService {
 
   static Future<AddressModel> getAddress(token) async {
     try {
-      final response = await http.get(
-        Uri.parse('$domain/address'), headers: <String, String>{
+      final response = await http
+          .get(Uri.parse('$domain/address'), headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
-        });
+      });
       final addressResponse = json.decode(response.body);
-      if (response.statusCode == 200 && addressResponse['message'] == 'Success') {
+      if (response.statusCode == 200 &&
+          addressResponse['message'] == 'Success') {
         return AddressModel(
-          message : addressResponse['message'],
-          data: DataAddress(
-            idUser: addressResponse['data']['id_user'], 
-            idAddress: addressResponse['data']['id_address'],
-            addressProvince: addressResponse['data']['addressProvince'],
-            addressDistrict: addressResponse['data']['addressDistrict'],
-            addressCommune: addressResponse['data']['addressCommune'],
-            addressSpecific: addressResponse['data']['addressSpecific'],
-            firstName: addressResponse['data']['firstName'],
-            lastName: addressResponse['data']['lastName'],
-            phone: addressResponse['data']['phone']
-          )
-        );
+            message: addressResponse['message'],
+            data: DataAddress(
+                idUser: addressResponse['data']['id_user'],
+                idAddress: addressResponse['data']['id_address'],
+                addressProvince: addressResponse['data']['addressProvince'],
+                addressDistrict: addressResponse['data']['addressDistrict'],
+                addressCommune: addressResponse['data']['addressCommune'],
+                addressSpecific: addressResponse['data']['addressSpecific'],
+                firstName: addressResponse['data']['firstName'],
+                lastName: addressResponse['data']['lastName'],
+                phone: addressResponse['data']['phone']));
       }
       return AddressModel();
     } catch (e) {
@@ -64,31 +63,29 @@ class ProfileService {
     }
   }
 
-  static Future<AddressModel> updateAddress(token,addressData) async {
+  static Future<AddressModel> updateAddress(token, addressData) async {
     try {
-      final response = await http.post(
-        Uri.parse('$domain/address'), headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode(<String ,String>{...addressData})
-      );
+      final response = await http.post(Uri.parse('$domain/address'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode(<String, String>{...addressData}));
       final addressResponse = json.decode(response.body);
-      if (response.statusCode == 200 && addressResponse['message'] == 'Success') {
+      if (response.statusCode == 200 &&
+          addressResponse['message'] == 'Success') {
         return AddressModel(
-          message : addressResponse['message'],
-          data: DataAddress(
-            idUser: addressResponse['data']['id_user'], 
-            idAddress: addressResponse['data']['id_address'],
-            addressProvince: addressResponse['data']['addressProvince'],
-            addressDistrict: addressResponse['data']['addressDistrict'],
-            addressCommune: addressResponse['data']['addressCommune'],
-            addressSpecific: addressResponse['data']['addressSpecific'],
-            firstName: addressResponse['data']['firstName'],
-            lastName: addressResponse['data']['lastName'],
-            phone: addressResponse['data']['phone']
-          )
-        );
+            message: addressResponse['message'],
+            data: DataAddress(
+                idUser: addressResponse['data']['id_user'],
+                idAddress: addressResponse['data']['id_address'],
+                addressProvince: addressResponse['data']['addressProvince'],
+                addressDistrict: addressResponse['data']['addressDistrict'],
+                addressCommune: addressResponse['data']['addressCommune'],
+                addressSpecific: addressResponse['data']['addressSpecific'],
+                firstName: addressResponse['data']['firstName'],
+                lastName: addressResponse['data']['lastName'],
+                phone: addressResponse['data']['phone']));
       }
       return AddressModel();
     } catch (e) {
@@ -99,39 +96,87 @@ class ProfileService {
 
   static Future<WishListModel> getWishList(token) async {
     try {
-      final response = await http.get(
-        Uri.parse('$domain/favorite/my'), headers: <String, String>{
+      final response = await http
+          .get(Uri.parse('$domain/favorite/my'), headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
-        }
-      );
+      });
       final wishlistResponse = json.decode(response.body);
       if (response.statusCode == 200 && wishlistResponse['data'].isNotEmpty) {
         final wishlistData = wishlistResponse['data'] as List<dynamic>;
         final List<DataWishList> wishlist = [];
         wishlistData.forEach((product) => {
-          wishlist.add(DataWishList(
-              idFavorite: product['id_favorite'],
-              idProduct: product['id_product'],
-              idUser: product['id_user'],
-              productName: product['productName'],
-              productImage: product['productImage'],
-              productPrice: product['productPrice'],
-              discount: product['discount'],
-              productAmount: product['productAmount'],
-              comments: product['comments'],
-            )
-          )
-        });
+              wishlist.add(DataWishList(
+                idFavorite: product['id_favorite'],
+                idProduct: product['id_product'],
+                idUser: product['id_user'],
+                productName: product['productName'],
+                productImage: product['productImage'],
+                productPrice: product['productPrice'],
+                discount: product['discount'],
+                productAmount: product['productAmount'],
+                comments: product['comments'],
+              ))
+            });
         return WishListModel(
-          message: wishlistResponse['message'],
-          data: wishlist
-        );
+            message: wishlistResponse['message'], data: wishlist);
       }
       return WishListModel(message: "Wishlist not found");
     } catch (e) {
       debugPrint("Error get wish list service : $e");
       return WishListModel(message: "Some thing went wrong");
+    }
+  }
+
+  static Future<DataWishList> addWishList(token, dataWishList) async {
+    try {
+      final response = await http.post(Uri.parse('$domain/favorite'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode(<String, dynamic>{...dataWishList}));
+      final wishlistResponse = json.decode(response.body);
+      if (response.statusCode == 200 && wishlistResponse['message'] == 'Success') {
+        return DataWishList(
+          idFavorite: wishlistResponse['data']['id_favorite'],
+          idProduct: wishlistResponse['data']['id_product'],
+          idUser: wishlistResponse['data']['id_user'],
+          productName: wishlistResponse['data']['productName'],
+          productImage: wishlistResponse['data']['productImage'],
+          productPrice: wishlistResponse['data']['productPrice'],
+          discount: wishlistResponse['data']['discount'],
+          productAmount: wishlistResponse['data']['productAmount'],
+          comments: wishlistResponse['data']['comments'],
+        );
+      }
+      return DataWishList();
+    } catch (e) {
+      debugPrint("Error add wish list service : $e");
+      return DataWishList();
+    }
+  }
+
+  static Future<int?> removeWishList(token, idWishlist) async {
+    // return id wishlist to delete
+    try {
+      final response = await http.delete(
+        Uri.parse("$domain/favorite/$idWishlist"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      final removeWishlistResponse = json.decode(response.body);
+      if (response.statusCode == 200 &&
+          removeWishlistResponse['message'] == 'Success') {
+        return removeWishlistResponse['data']['id_favorite'];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      debugPrint("Remove wishlist service error : $e");
+      return null;
     }
   }
 }

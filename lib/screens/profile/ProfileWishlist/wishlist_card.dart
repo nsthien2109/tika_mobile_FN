@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tika_store/configs/config.dart';
 import 'package:tika_store/configs/responsive.dart';
 import 'package:tika_store/configs/styles.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/wishlist.dart';
+import 'package:tika_store/providers/profile_provider.dart';
 import 'package:tika_store/widgets/cache_image/cache_image_network.dart';
 
 class WishListCard extends StatelessWidget {
@@ -83,9 +85,7 @@ class WishListCard extends StatelessWidget {
                     children: [
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          //showPopupDeleteTabWishlist(index, boxImageSize);
-                        },
+                        onTap: () => context.read<ProfileProvider>().removeWishList(context,wishlist!.idFavorite),
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                           height: 30,

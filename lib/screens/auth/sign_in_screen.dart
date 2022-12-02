@@ -22,39 +22,51 @@ class SignInScreen extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                Container(
-                  width: widthP(context),
-                  height: widthP(context)/2,
-                  padding: const EdgeInsets.all(10),
-                  decoration:  const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(80),
-                      topRight: Radius.circular(80),                  
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primary,
-                        AppColors.primary,
-                        AppColors.red
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    )
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Tika".toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 28,
-                            fontFamily: 'TitanOne', color: AppColors.white
+                Stack(
+                  children: [
+                    Container(
+                      width: widthP(context),
+                      height: widthP(context)/2,
+                      padding: const EdgeInsets.all(10),
+                      decoration:  const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(80),
+                          topRight: Radius.circular(80),                  
                         ),
-                        textAlign: TextAlign.center,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primary,
+                            AppColors.primary,
+                            AppColors.red
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        )
                       ),
-                      Image.asset('assets/images/login_sticker.png', width: widthP(context) / 3)
-                    ],
-                  ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Tika".toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 28,
+                                fontFamily: 'TitanOne', color: AppColors.white
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image.asset('assets/images/login_sticker.png', width: widthP(context) / 3)
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 0,
+                      child: IconButton(
+                        onPressed: ()=> Navigator.pop(context), 
+                        icon: const Icon(FluentIcons.chevron_left_12_filled, color: AppColors.white)
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
                   margin: const EdgeInsets.all(10),

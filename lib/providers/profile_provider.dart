@@ -49,6 +49,12 @@ class ProfileProvider extends CartProvider {
     getStoredProfile();
   }
 
+  void checkLogin(context, token) {
+    if (token == null) {
+      Navigator.pushNamed(context, '/sign_in');
+    }
+  }
+
   Future getStoredProfile() async {
     final userId = await getStringStorage('id_user');
     final userName = await getStringStorage('name_user');
@@ -80,10 +86,40 @@ class ProfileProvider extends CartProvider {
     notifyListeners();
   }
 
+  Future updateAddress(context) async {
+    final addressData = {
+      'addressProvince': _provinceController.text,
+      'addressDistrict': _districtController.text,
+      'addressCommune': _communeController.text,
+      'addressSpecific': _specificController.text
+    };
+    final token = await getStringStorage('accessToken');
+    await ProfileService.updateAddress(token, addressData);
+    getAddress();
+    Navigator.pop(context);
+    notifyListeners();
+  }
+
   Future getWishList() async {
     final token = await getStringStorage('accessToken');
     final WishListModel wishlistData = await ProfileService.getWishList(token);
     _wishlist = wishlistData;
+    notifyListeners();
+  }
+
+  Future addWishList(context, dataWishList) async {
+    final token = await getStringStorage('accessToken');
+    checkLogin(context, token);
+    final response = await ProfileService.addWishList(token, dataWishList);
+    _wishlist?.data?.add(response);
+    notifyListeners();
+  }
+
+  Future removeWishList(context, idWishlist) async {
+    final token = await getStringStorage('accessToken');
+    checkLogin(context, token);
+    final response = await ProfileService.removeWishList(token, idWishlist);
+    _wishlist?.data?.removeWhere((element) => element.idFavorite == response);
     notifyListeners();
   }
 

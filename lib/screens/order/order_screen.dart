@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tika_store/models/order.dart';
 import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/screens/order/OrderListCard/order_list_card.dart';
 import 'package:tika_store/widgets/shimmer/shimmer_loading.dart';
@@ -19,7 +20,6 @@ class OrderScreen extends StatelessWidget {
           body: SafeArea(
             child: state.orderLoading != true ? ListView.builder(
               itemCount: state.orderList.data?.length,
-              // Add one more item for progress indicator
               padding: const EdgeInsets.symmetric(vertical: 0),
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (context, index) {

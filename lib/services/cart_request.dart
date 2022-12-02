@@ -54,7 +54,7 @@ class CartService {
   static Future<int?> removeCart(token, idCart) async {
     // return id cart to delete in state cart provider
     try {
-      final response = await http.get(
+      final response = await http.delete(
         Uri.parse("$domain/remove-cart/$idCart"),
         headers : <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -62,15 +62,18 @@ class CartService {
         },
       );
       final removeCartResponse = json.decode(response.body);
-      
+      if(response.statusCode == 200 && removeCartResponse['message'] == 'Success'){
+        return removeCartResponse['data']['id_cart'];
+      }else{
+        return null;
+      }
     } catch (e) {
       debugPrint("Remove cart service error : $e");
+      return null;
     }
-
   }
 
   static Future<DataCart> addCart(cartData,token) async{
-     print("CHECK : $cartData");
     try {
       final response = await http.post(
         Uri.parse("$domain/cart"),
@@ -81,9 +84,7 @@ class CartService {
         body: jsonEncode(<String ,dynamic>{...cartData})
       );
       final cartResponse = json.decode(response.body);
-      print(cartResponse['message']);
       if (response.statusCode == 200 && cartResponse['message'] == 'Success') {
-        print("ĐÚNG RỒI ->>>>");
         return DataCart(
             idCart: cartResponse['id_cart'],
             idColor: cartResponse['id_color'],
@@ -106,7 +107,6 @@ class CartService {
             purchases: cartResponse['purchases'],
         );
       } else {
-        print("SAI RỒI");
         return DataCart();
       }
     } catch (e) {

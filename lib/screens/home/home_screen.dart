@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/providers/auth_provider.dart';
+import 'package:tika_store/providers/cart_provider.dart';
 import 'package:tika_store/providers/home_provider.dart';
 import 'package:tika_store/screens/home/category/category_menu.dart';
 import 'package:tika_store/screens/home/recommended/recommended_product.dart';
@@ -56,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                                       color: Colors.red, 
                                       borderRadius: BorderRadius.circular(20)
                                     ),
-                                    child: Text("${state2.cartList.data?.length}", style: const TextStyle(
+                                    child: Text('${state2.cartList.data?.length ?? 0}', style: const TextStyle(
                                       fontSize: 7, 
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.white

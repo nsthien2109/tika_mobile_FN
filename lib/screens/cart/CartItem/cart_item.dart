@@ -1,11 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tika_store/configs/config.dart';
 import 'package:tika_store/configs/responsive.dart';
 import 'package:tika_store/configs/styles.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/cart.dart';
+import 'package:tika_store/providers/auth_provider.dart';
 import 'package:tika_store/widgets/cache_image/cache_image_network.dart';
 
 class CartItem extends StatelessWidget {
@@ -36,7 +38,9 @@ class CartItem extends StatelessWidget {
                       child: cacheImageNetwork(
                           width: imageSize,
                           height: imageSize,
-                          url: "$server/${cartItem.productImage}")),
+                          url: "$server/${cartItem.productImage}"
+                      )
+                  ),
                 ),
                 const SizedBox(
                   width: 10,
@@ -66,7 +70,7 @@ class CartItem extends StatelessWidget {
                           children: [
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
-                              onTap: () {},
+                              onTap: ()=> context.read<AuthProvider>().removeCart(cartItem.idCart),
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                                 height: 30,
@@ -95,10 +99,8 @@ class CartItem extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Container(
-                                  child: Text("${cartItem.quantity}",
-                                      style: const TextStyle()),
-                                ),
+                                Text("${cartItem.quantity}",
+                                    style: const TextStyle()),
                                 const SizedBox(width: 10),
                                 GestureDetector(
                                   behavior: HitTestBehavior.translucent,

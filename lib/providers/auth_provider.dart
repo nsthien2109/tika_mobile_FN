@@ -46,13 +46,13 @@ class AuthProvider extends ProfileProvider {
         _account = accountData;
         if (accountData?.data != null && accountData?.data?.id != null) {
           await setStringStorage('id_user', _account!.data!.id.toString());
-          await setStringStorage('name_user',
-              "${_account!.data!.firstName} ${_account!.data!.lastName}");
+          await setStringStorage('name_user',"${_account!.data!.firstName} ${_account!.data!.lastName}");
           await setStringStorage('email_user', _account!.data!.email);
           await setStringStorage('accessToken', _account!.accessToken);
           getStoredProfile().then((value) => print("UID => $uid"));
         }
         TikaToast.showToast(context, accountData!.message);
+        Navigator.pop(context);
         clearInput();
         _loadingAuth = false;
         notifyListeners();
@@ -111,13 +111,13 @@ class AuthProvider extends ProfileProvider {
         _account = accountData;
         if (accountData?.data != null && accountData?.data?.id != null) {
           await setStringStorage('id_user', _account!.data!.id.toString());
-          await setStringStorage('name_user',
-              "${_account!.data!.firstName} ${_account!.data!.lastName}");
+          await setStringStorage('name_user',"${_account!.data!.firstName} ${_account!.data!.lastName}");
           await setStringStorage('email_user', _account!.data!.email);
           await setStringStorage('accessToken', _account!.accessToken);
           getStoredProfile();
         }
         TikaToast.showToast(context, accountData!.message);
+        Navigator.pop(context);
         _loadingAuth = false;
         clearInput();
         notifyListeners();

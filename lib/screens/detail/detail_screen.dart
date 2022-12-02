@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/product.dart';
 import 'package:tika_store/providers/auth_provider.dart';
+import 'package:tika_store/providers/cart_provider.dart';
 import 'package:tika_store/providers/category_provider.dart';
 import 'package:tika_store/providers/detail_product_provider.dart';
 import 'package:tika_store/providers/profile_provider.dart';
@@ -51,10 +52,11 @@ class _DetailScreenState extends State<DetailScreen> {
           backgroundColor: AppColors.background,
           appBar: AppBar(
             actions: [
-              checkWishList?.isEmpty == true ? IconButton(
-                  onPressed: () {}, icon: const Icon(FluentIcons.heart_16_regular)) :
+              checkWishList?.isEmpty == true || wishlistState.wishlist?.data == null ? IconButton(
+                  onPressed: ()=> wishlistState.addWishList(context,{'id_product' : widget.product.idProduct}), 
+                  icon: const Icon(FluentIcons.heart_16_regular)) :
               IconButton(
-                  onPressed: () {}, icon: const Icon(FluentIcons.heart_16_filled), color: AppColors.red,),
+                  onPressed: ()=> wishlistState.removeWishList(context,checkWishList?.first.idFavorite), icon: const Icon(FluentIcons.heart_16_filled), color: AppColors.red,),
               IconButton(
                   onPressed: () {}, icon: const Icon(FluentIcons.share_16_regular)),
               IconButton(
@@ -71,7 +73,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             currentSlider: detailState.currentImage,
                             images: detailState.images.data),
 
-                        ProductSumary(product: widget.product, isFavorited: checkWishList?.isEmpty == true ? false : true),
+                        ProductSumary(product: widget.product, isFavorited: checkWishList?.isEmpty == true || wishlistState.wishlist?.data == null ? false : true),
                         ProductVariant(
                           sizes: detailState.variant.data?.sizes,
                           colors: detailState.variant.data?.colors,
@@ -122,7 +124,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 const SizedBox(width: 20),
                 Expanded(
-                  child: checkCart?.isEmpty == true ? TikaButton(
+                  child: checkCart?.isEmpty == true || cartState.cartList.data == null ? TikaButton(
                     label: "Add to cart", 
                     height: 50,
                     onTap: ()=>cartState.addtoCart(
