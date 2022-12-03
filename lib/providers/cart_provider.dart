@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tika_store/configs/share_prefs.dart';
+import 'package:tika_store/configs/theme.dart';
 import 'package:tika_store/models/cart.dart';
 import 'package:tika_store/models/coupon.dart';
 import 'package:tika_store/providers/order_provider.dart';
@@ -21,9 +22,34 @@ class CartProvider extends OrderProvider {
 
   double? get totalCart {
     if (_cartList.data?.isEmpty == true || _cartList.data == null) {
+      // khi gio hang trong
       return 0.0;
     } else {
-      return _cartList.data?.map((item) => item.productPrice! * (item.quantity as num)).reduce((value, current) => value + current) ?? 0.0;
+      // khi co san pham trong gio hang
+      //final price = _cartList.data?.map((item) => item.productPrice! * (item.quantity as num)).reduce((value, current) => value + current) ?? 0.0;
+      final price = _cartList.data?.map((item){
+          if(_coupon.data?.idCoupon != null){
+            if(_coupon.data?.couponType == "global"){
+              final pdPrice = item.productPrice! * (item.quantity as num);
+              final couponDiscount = _coupon.data?.couponPercent ?? 0.0;
+              final salePrice = pdPrice - pdPrice * couponDiscount / 100;
+              return salePrice;
+            }else if(_coupon.data?.couponType == "store"){
+              if(item.idStore == _coupon.data?.idStore){
+                final pdPrice = item.productPrice! * (item.quantity as num);
+                final couponDiscount = _coupon.data?.couponPercent ?? 0.0;
+                final salePrice = pdPrice - pdPrice * (couponDiscount) / 100;
+                return salePrice;
+              }else{
+                return item.productPrice! * (item.quantity as num);
+              }
+            }
+          }else{
+            return item.productPrice! * (item.quantity as num);
+          }
+        }
+      ).reduce((value, current) => value! + current!) ?? 0.0;
+      return price;
     }
   }
 
@@ -91,16 +117,23 @@ class CartProvider extends OrderProvider {
     }
   }
 
-  void checkCouponCode() async {
+  void checkCouponCode(context) async {
     _cartLoading = true;
-    try {
-      final responseCoupon = await CouponService.checkCoupon(_couponController.text);
-      _coupon = responseCoupon ?? CouponModel();
-      _cartLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _cartLoading = false;
-      debugPrint("Check coupon failed provider: $e");
+    if (_formKeyCoupon.currentState!.validate()) {
+      try {
+        final dataCoupon = {'couponCode': _couponController.text};
+        final responseCoupon = await CouponService.checkCoupon(dataCoupon);
+        _coupon = responseCoupon ?? CouponModel();
+        _cartLoading = false;
+        TikaToast.showToast(context, responseCoupon?.message);
+        _couponController.clear();
+        notifyListeners();
+      } catch (e) {
+        _cartLoading = false;
+        debugPrint("Check coupon failed provider: $e");
+      }
+    } else {
+      debugPrint("Loi check coupon");
     }
   }
 }

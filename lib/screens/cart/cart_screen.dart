@@ -55,39 +55,46 @@ class CartScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         height: 60,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            TextFormField(
-                              decoration:  InputDecoration(
-                                filled: true,
-                                fillColor: Colors.black12,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(color: AppColors.white, width: 2.0)),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(color: AppColors.white),
+                        child: Form(
+                          key: state.formKeyCoupon,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              TextFormField(
+                                controller: state.couponController,
+                                decoration:  InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.grey[100],
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(color: AppColors.white, width: 2.0)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(color: AppColors.white),
+                                  ),
+                                  hintText: "Enter coupon code ...",
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.blackLighter, 
+                                  ),                         
                                 ),
-                                hintText: "Enter coupon code ...",
-                                hintStyle: const TextStyle(
-                                  color: AppColors.blackLighter, 
-                                ),                         
                               ),
-                            ),
-                            Positioned(
-                              right: 2,
-                              child: Container(
-                                width: 55,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(5)
+                              Positioned(
+                                right: 2,
+                                child: GestureDetector(
+                                  onTap: ()=> state.checkCouponCode(context),
+                                  child: Container(
+                                    width: 55,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.circular(5)
+                                    ),
+                                    child: const Icon(FluentIcons.check_20_regular, size: 26,color: AppColors.white),
+                                  ),
                                 ),
-                                child: const Icon(FluentIcons.check_20_regular, size: 26,color: AppColors.white),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       Row(

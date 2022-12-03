@@ -24,7 +24,7 @@ class DataCoupon {
   String? couponName;
   String? couponDescription;
   String? couponCode;
-  String? couponPercent;
+  double? couponPercent;
   String? couponType;
   int? couponTurns;
   int? idStore;

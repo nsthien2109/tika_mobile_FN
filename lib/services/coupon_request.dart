@@ -22,7 +22,7 @@ class CouponService{
           couponCode: couponResponse['data']['couponCode'],
           couponDescription: couponResponse['data']['couponDescription'],
           couponName: couponResponse['data']['couponName'],
-          couponPercent: couponResponse['data']['couponPercent'],
+          couponPercent: double.parse(couponResponse['data']['couponPercent']) ?? 0.0,
           couponTurns: couponResponse['data']['couponTurns'],
           couponType: couponResponse['data']['couponType'],
           startTime: couponResponse['data']['start_time'],
@@ -32,7 +32,7 @@ class CouponService{
       );
     }
     else{
-      return CouponModel();
+      return CouponModel(message: couponResponse['message']);
     }
   }
 }
